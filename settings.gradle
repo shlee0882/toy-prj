@@ -1,0 +1,18 @@
+pluginManagement {
+	repositories {
+		maven { url 'https://repo.spring.io/release' }
+		gradlePluginPortal()
+	}
+	resolutionStrategy {
+		eachPlugin {
+			if (requested.id.id == 'org.hibernate.orm') {
+				useModule('org.hibernate:hibernate-gradle-plugin:5.4.30.Final')
+			}
+		}
+	}
+	plugins {
+		// ...
+		id 'org.springframework.experimental.aot' version '0.9.2'
+	}
+}
+rootProject.name = 'toy'

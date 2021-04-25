@@ -1,0 +1,13 @@
+spring:
+  config:
+    use-legacy-processing: true
+  profiles: local
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul&useSSL=false
+    username: root
+    password: Abcd123@
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari.idleTimeout: 10000
+    hikari.connection-timeout: 10000
+    hikari.validation-timeout: 10000
+    hikari.maxLifetime: 580000

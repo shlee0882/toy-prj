@@ -3,6 +3,7 @@ package com.portfolio.toy.config;
 import com.portfolio.toy.common.security.CustomAccessDeniedHandler;
 import com.portfolio.toy.common.security.CustomLoginSuccessHandler;
 import com.portfolio.toy.common.security.CustomNoOpPasswordEncoder;
+import com.portfolio.toy.common.security.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -59,20 +61,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .password("{noop}1234")
 //                .roles("ADMIN");
 
-        // 인증할때 필요한 쿼리
-        String query1 = "SELECT user_id , user_pw , enabled FROM member WHERE user_id = ?";
-        // 권한 확인 할때 필요한 쿼리
-        String query2 ="SELECT b.user_id, a.auth FROM member_auth a, member b WHERE a.user_no = b.user_no AND b.user_id = ?";
-
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(query1)
-                .authoritiesByUsernameQuery(query2)
-                .passwordEncoder(createPasswordEncoder());
+//        // 인증할때 필요한 쿼리
+//        String query1 = "SELECT user_id , user_pw , enabled FROM member WHERE user_id = ?";
+//        // 권한 확인 할때 필요한 쿼리
+//        String query2 ="SELECT b.user_id, a.auth FROM member_auth a, member b WHERE a.user_no = b.user_no AND b.user_id = ?";
+//
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .usersByUsernameQuery(query1)
+//                .authoritiesByUsernameQuery(query2)
+//                .passwordEncoder(createPasswordEncoder());
 
 //        auth.jdbcAuthentication()
 //                .dataSource(dataSource)
 //                .passwordEncoder(passwordEncoder());
+
+        auth.userDetailsService(createUserDetailsService())
+                .passwordEncoder(createPasswordEncoder());
+    }
+
+    @Bean
+    public UserDetailsService customUserDetailsService() {
+        return new CustomUserDetailsService();
+    }
+
+    @Bean
+    public UserDetailsService createUserDetailsService() {
+        return new CustomUserDetailsService();
     }
 
     @Bean

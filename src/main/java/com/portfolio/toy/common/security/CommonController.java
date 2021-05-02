@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CommonController {
 
     @GetMapping("/accessError")
-    public String accessDenied(Authentication auth, Model model) {
+    public void accessDenied(Authentication auth, Model model) {
         log.info("access Denied : " + auth);
         model.addAttribute("msg", "Access Denied");
-        return "error/accessError";
     }
 }
